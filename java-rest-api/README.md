@@ -200,3 +200,9 @@ Este projeto foi desenvolvido com foco em:
 ## 👨‍💻 Autor
 
 Paulo George da Cruz Araújo Filho.
+
+<img width="837" height="292" alt="image" src="https://github.com/user-attachments/assets/ad0bc276-917b-4dc5-be17-0f2dd050a9b7" />
+
+<img width="1643" height="638" alt="image" src="https://github.com/user-attachments/assets/5a5f86bd-a3c8-4cb7-a962-19473967ca8a" />
+
+
