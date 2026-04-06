@@ -71,3 +71,63 @@ public class ApiControllerTest {
                 .andExpect(status().isNotFound());
     }
 }
+
+    @Test
+public void testCreateItemWithEmptyName() throws Exception {
+    Item item = new Item(null, "", "Desc");
+
+    mockMvc.perform(post("/api/items")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(item)))
+            .andExpect(status().isBadRequest());
+    }
+}
+
+    @Test
+public void testCreateItemWithNullName() throws Exception {
+    Item item = new Item(null, null, "Desc");
+
+    mockMvc.perform(post("/api/items")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(item)))
+            .andExpect(status().isBadRequest());
+    }
+}
+
+    @Test
+public void testCreateItemWithEmptyDescription() throws Exception {
+    Item item = new Item(null, "Item", "");
+
+    mockMvc.perform(post("/api/items")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(item)))
+            .andExpect(status().isBadRequest());
+    }
+}
+
+    @Test
+public void testSearchByName() throws Exception {
+    mockMvc.perform(get("/api/items/search")
+                    .param("name", "Item 1")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json("[{\"id\":1,\"name\":\"Item 1\",\"description\":\"Description 1\"}]"));
+    }
+}
+
+    @Test
+public void testSearchByNameEmpty() throws Exception {
+    mockMvc.perform(get("/api/items/search")
+                    .param("name", "")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+}
+
+    @Test
+public void testCountItems() throws Exception {
+    mockMvc.perform(get("/api/items/count"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("1")); // já criaste 1 no @BeforeEach
+    }
+}

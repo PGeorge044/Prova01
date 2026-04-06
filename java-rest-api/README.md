@@ -1,91 +1,202 @@
-# Java REST API
+# 📦 API REST de Gerenciamento de Itens
 
-Este projeto é uma API REST simples em Java, desenvolvida com Spring Boot. Ele disponibiliza endpoints para gerenciar itens e oferece suporte a respostas nos formatos JSON e XML.
+## 📌 Descrição
 
-## Estrutura do Projeto
+Este projeto consiste em uma API REST desenvolvida com **Spring Boot** para gerenciamento de itens.
+A API permite realizar operações básicas como criação, consulta e listagem de itens, além de novos endpoints adicionais e validações de regras de negócio.
+
+A aplicação suporta respostas nos formatos **JSON** e **XML**.
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+* Java
+* Spring Boot
+* Spring Web
+* JUnit 5
+* MockMvc
+* Jackson (JSON/XML)
+* JaCoCo (cobertura de testes)
+
+---
+
+## 📂 Estrutura do Projeto
 
 ```
-java-rest-api
-├── pom.xml
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── example
-│   │   │           └── demo
-│   │   │               ├── DemoApplication.java
-│   │   │               ├── controller
-│   │   │               │   └── ApiController.java
-│   │   │               └── model
-│   │   │                   └── Item.java
-│   │   └── resources
-│   │       └── application.properties
-│   └── test
-│       └── java
-│           └── com
-│               └── example
-│                   └── demo
-│                       └── ApiControllerTest.java
-└── README.md
+src/
+ ├── main/java/com/example/demo/
+ │    ├── controller/        # Endpoints da API
+ │    ├── service/           # Regras de negócio
+ │    ├── model/             # Entidade Item
+ │    ├── exception/         # Exceções customizadas
+ │
+ ├── test/java/com/example/demo/
+ │    ├── ApiControllerTest  # Testes da API
 ```
 
-## Instruções de Configuração
+---
 
-1. **Clonar o repositório::**
-   ```
-   git clone <repository-url>
-   cd java-rest-api
-   ```
+## 🔗 Endpoints Disponíveis
 
-2. **Compilar o projeto:**
-   Certifique-se de que o Maven esteja instalado e, em seguida, execute:
-   ```
-   mvn clean install
-   ```
+### 📌 Endpoints principais
 
-3. **Executar a aplicação:**
-   Você pode iniciar a aplicação utilizando:
-   ```
-   mvn spring-boot:run
-   ```
+| Método | Endpoint          | Descrição          |
+| ------ | ----------------- | ------------------ |
+| GET    | `/api/items/{id}` | Buscar item por ID |
+| POST   | `/api/items`      | Criar novo item    |
 
-4. **Acessar a API:**
-   A API estará disponível em `http://localhost:8080/api/items`.
+---
 
-## Exemplos de Uso
+### 🚀 Novos endpoints implementados
 
-- **Obter todos os itens:**
-  ```
-  GET /api/items
-  ```
+| Método | Endpoint                  | Descrição                           |
+| ------ | ------------------------- | ----------------------------------- |
+| GET    | `/api/items/search?name=` | Buscar itens pelo nome              |
+| GET    | `/api/items/count`        | Retorna a quantidade total de itens |
 
-- **Obter um item por ID:**
-  ```
-  GET /api/items/{id}
-  ```
+---
 
-- **Criar um novo item:**
-  ```
-  POST /api/items
-  Content-Type: application/json
+## ⚠️ Regras de Negócio
 
-  {
-      "name": "Item Name",
-      "description": "Item Description"
-  }
-  ```
+As seguintes regras foram implementadas e testadas:
 
-## Testes
+### ✔️ Validações obrigatórias
 
-Testes unitários estão incluídos no projeto para validar a funcionalidade da API. Você pode executá-los utilizando:
+* O **nome do item**:
+
+    * Não pode ser nulo
+    * Não pode ser vazio
+
+* A **descrição do item**:
+
+    * Não pode ser nula
+    * Não pode ser vazia
+
+---
+
+### ❌ Cenários de erro
+
+A API lança a exceção customizada:
+
+`InvalidItemDataException`
+
+Nos seguintes casos:
+
+* Nome nulo ou vazio
+* Descrição nula ou vazia
+* Parâmetro de busca inválido
+
+Esses erros retornam:
+
 ```
+HTTP 400 - Bad Request
+```
+
+---
+
+### ✔️ Cenários de sucesso
+
+* Criar item válido → `201 Created`
+* Buscar item existente → `200 OK`
+* Buscar item inexistente → `404 Not Found`
+* Buscar por nome válido → `200 OK`
+* Contar itens → `200 OK`
+
+---
+
+## 🧪 Testes
+
+Foram implementados testes unitários utilizando **JUnit 5** e **MockMvc**, cobrindo:
+
+### ✔️ Testes de sucesso
+
+* Criação de item válido
+* Consulta de item existente
+* Busca por nome
+* Contagem de itens
+
+### ❌ Testes de falha
+
+* Nome vazio
+* Nome nulo
+* Descrição vazia
+* Item não encontrado
+* Parâmetros inválidos
+
+---
+
+## 📊 Cobertura de Testes
+
+A cobertura de testes foi gerada utilizando o **JaCoCo**.
+
+Para visualizar o relatório:
+
+```
+target/site/jacoco/index.html
+```
+
+Um print do relatório foi incluído na entrega.
+
+---
+
+## ▶️ Como Executar o Projeto
+
+### 🔧 Pré-requisitos
+
+* Java 17+ (ou compatível)
+* Maven
+
+---
+
+### ▶️ Executar a aplicação
+
+```bash
+mvn spring-boot:run
+```
+
+A API estará disponível em:
+
+```
+http://localhost:8080/api/items
+```
+
+---
+
+### 🧪 Executar os testes
+
+```bash
 mvn test
 ```
 
-Isso executará os testes definidos em `ApiControllerTest.java`, os quais verificam as respostas corretas em JSON e XML, além de validar os códigos de status HTTP.
+---
 
-## Documentação completa dos testes unitários
+### 📊 Gerar relatório de cobertura
 
-Focar em testes é o que diferencia um código que "funciona agora" de um código robusto e confiável a longo prazo. É uma das habilidades mais importantes para um desenvolvedor.
+```bash
+mvn clean test
+```
 
+Depois abrir:
 
+```
+target/site/jacoco/index.html
+```
+
+---
+
+## 📌 Observações Finais
+
+Este projeto foi desenvolvido com foco em:
+
+* Boas práticas de API REST
+* Validação de dados
+* Tratamento de exceções
+* Cobertura de testes
+* Organização de código em camadas
+
+---
+
+## 👨‍💻 Autor
+
+Paulo George da Cruz Araújo Filho.
